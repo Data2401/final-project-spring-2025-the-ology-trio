@@ -10,6 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### The Ology Trio
 
+Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-prime-video-disney
+
+
 # What's In It?
 
 # This dataset contains information on movies available across four major streaming platforms: Netflix, Prime Video, Disney+, and Hulu. It includes data points like: 
