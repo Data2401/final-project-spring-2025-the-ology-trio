@@ -21,7 +21,9 @@ Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-pri
 
 - Genre(s) 
 
-- IMDb and Rotten Tomatoes scores 
+- Age Group Recommendations
+
+- Rotten Tomatoes scores 
 
 - Year of release 
 
@@ -29,7 +31,7 @@ Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-pri
 
 - Platform availability flags (True/False for each) 
 
-The dataset is interesting because it allows us to analyze and compare streaming services based on their content catalogs, quality of available titles, and genre distribution. We can explore trends in movie ratings, exclusivity, and the evolution of content over time. 
+This dataset is useful because it lets us look at and compare what each streaming service offers; like what kinds of movies they have, how good those movies are, and which genres are most common. We can also see patterns in ratings, find out which movies are only on one platform, and watch how their movie collections have changed over time. 
 
 ---
 
@@ -40,7 +42,7 @@ Streaming platforms are now the go-to for watching movies and shows, and each on
 ---
 
 ### Questions We Plan to Ask (and Graphs to Make) 
-1. Which platform has the highest-rated content overall (based on IMDb and Rotten Tomatoes)?
+1. Which platform has the highest-rated content overall (based on Rotten Tomatoes)
 
 Bar graph comparing average ratings across platforms 
 
@@ -55,7 +57,7 @@ Stacked bar chart or genre heatmap
 Line graph over time 
 
 
-4. Which platform has the most critically acclaimed movies (IMDb > 8 or RT > 90%)? 
+4. Which platform has the most critically acclaimed movies (RT > 90%)? 
 
 Scatter plot or distribution chart 
 
@@ -67,4 +69,27 @@ Venn diagram or matrix of shared titles
 6. Of each platform, what are the difference between age group recommendation?
   
 Scatter plot by age
+
+7. Do longer movies tend to have higher raters?
+
+Scatter plot of runtime vs. RT rating
+
+8. Which platforms are more focused on recent vs. classic films?
+
+Histogram of release years per platform
+
+9. Which genres tend to have the highest/lowest ratings?
+
+Boxplots or bar charts by genre, showing average/median scores
+
+10. How have movie ratings changed over time per platform?
+
+Line graph of average rating per year per platform
+
+12. What genres are most underrepresented per platform?
+
+Heatmap showing missing or low-count genres
+
+
+
 
