@@ -40,30 +40,31 @@ The dataset is interesting because it allows us to analyze and compare streaming
 ---
 
 ### Questions We Plan to Ask (and Graphs to Make) 
-# 1. Which platform has the highest-rated content overall (based on IMDb and Rotten Tomatoes)? 
+# 1. Which platform has the highest-rated content overall (based on IMDb and Rotten Tomatoes)?
 
 Bar graph comparing average ratings across platforms 
 
   
-
 2. What are the most dominant genres for each streaming service?  
 
 Stacked bar chart or genre heatmap 
 
-  
 
 3. How do the number of movies released per year vary by platform? 
 
 Line graph over time 
 
-  
 
 4. Which platform has the most critically acclaimed movies (IMDb > 8 or RT > 90%)? 
 
 Scatter plot or distribution chart 
 
   
-
-What is the overlap of movies across multiple platforms?  
+5. What is the overlap of movies across multiple platforms?  
 
 Venn diagram or matrix of shared titles 
+
+6. Of each platform, what are the difference between age group recommendation?
+  
+Scatter plot by age
+
