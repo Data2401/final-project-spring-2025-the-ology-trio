@@ -370,8 +370,9 @@ includes data points like:</p>
 <li><p>Age Group Recommendations</p></li>
 <li><p>Rotten Tomatoes scores</p></li>
 <li><p>Year of release</p></li>
-<li><p>Runtime</p></li>
-<li><p>Platform availability flags (True/False for each)</p></li>
+<li><p>Platform availability flags (0 or 1 for each)</p></li>
+<li><p>Type: A categorical indicator distinguishing the content as
+either a ‘Movie’ or a ‘TV Show’.</p></li>
 </ul>
 <p>This dataset is useful because it lets us look at and compare what
 each streaming service offers; like what kinds of movies they have, how
@@ -391,55 +392,40 @@ data, we can spot each platform’s strengths, see trends in genres and
 quality, and help people or companies make smarter choices when it comes
 to content.</p>
 <hr />
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <div id="questions-we-plan-to-ask-and-graphs-to-make" class="section level3">
 <h3>Questions We Plan to Ask (and Graphs to Make)</h3>
-<ol style="list-style-type: decimal">
-<li>Which platform has the highest-rated content overall (based on
-Rotten Tomatoes)</li>
-</ol>
-<p>Bar graph comparing average ratings across platforms</p>
-<ol start="2" style="list-style-type: decimal">
-<li>What are the most dominant genres for each streaming service?</li>
-</ol>
-<p>Stacked bar chart or genre heatmap</p>
-<ol start="3" style="list-style-type: decimal">
-<li>How do the number of movies released per year vary by platform?</li>
-</ol>
-<p>Line graph over time</p>
-<ol start="4" style="list-style-type: decimal">
-<li>Which platform has the most critically acclaimed movies (RT &gt;
-90%)?</li>
-</ol>
-<p>Scatter plot or distribution chart</p>
-<ol start="5" style="list-style-type: decimal">
-<li>What is the overlap of movies across multiple platforms?</li>
-</ol>
-<p>Venn diagram or matrix of shared titles</p>
-<ol start="6" style="list-style-type: decimal">
-<li>Of each platform, what are the difference between age group
-recommendation?</li>
-</ol>
-<p>Scatter plot by age</p>
-<ol start="7" style="list-style-type: decimal">
-<li>Do longer movies tend to have higher raters?</li>
-</ol>
-<p>Scatter plot of runtime vs. RT rating</p>
-<ol start="8" style="list-style-type: decimal">
-<li>Which platforms are more focused on recent vs. classic films?</li>
-</ol>
-<p>Histogram of release years per platform</p>
-<ol start="9" style="list-style-type: decimal">
-<li>Which genres tend to have the highest/lowest ratings?</li>
-</ol>
-<p>Boxplots or bar charts by genre, showing average/median scores</p>
-<ol start="10" style="list-style-type: decimal">
-<li>How have movie ratings changed over time per platform?</li>
-</ol>
-<p>Line graph of average rating per year per platform</p>
-<ol start="12" style="list-style-type: decimal">
-<li>What genres are most underrepresented per platform?</li>
-</ol>
-<p>Heatmap showing missing or low-count genres</p>
+<p>Which platform has the highest-rated content overall (based on Rotten
+Tomatoes scores)? Bar graph comparing average Rotten Tomatoes score for
+each platform</p>
+<p>How many titles are available on each platform? Bar graph showing
+total number of titles per platform</p>
+<p>How has the number of titles released over time changed for each
+platform? Line graph showing number of titles per release year, grouped
+by platform</p>
+<p>Which platform has the most highly rated content (RT score &gt; 90%)?
+Bar chart showing count of high-rated titles per platform</p>
+<p>How do age ratings vary across platforms? Grouped bar chart showing
+count of each age rating (e.g., PG, R) per platform</p>
+<p>Which platforms focus more on older vs. newer titles? Histogram
+showing release years per platform</p>
+<p>How do average Rotten Tomatoes scores differ by age rating? Boxplot
+or bar chart showing average score per age group</p>
+<p>How have average Rotten Tomatoes scores changed over time per
+platform? Line graph of average score by year for each platform</p>
+<p>Which age ratings are underrepresented on each platform? Heatmap or
+bar chart showing low-count age groups per platform</p>
 </div>
 </div>
 </div>
