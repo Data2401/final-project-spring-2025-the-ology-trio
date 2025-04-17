@@ -11,7 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ### The Ology Trio
 
 Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-prime-video-disney
+```{r}
 
+library(dplyr)
+
+library(tidyverse)
+
+
+
+
+```
+
+
+```{r}
+streaming_data <- read.csv("MoviesOnStreamingPlatforms 2.csv") 
+#streaming_data <- read.csv("C:/Users/ar309/AppData/Local/Temp/bd77a138-b51e-4d73-ba8a-91587158c44a_archive.zip.44a/MoviesOnStreamingPlatforms.csv") 
+
+glimpse(streaming_data)
+
+```
 
 # What's In It?
 
@@ -42,54 +60,127 @@ Streaming platforms are now the go-to for watching movies and shows, and each on
 ---
 
 ### Questions We Plan to Ask (and Graphs to Make) 
-1. Which platform has the highest-rated content overall (based on Rotten Tomatoes)
+1. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
 
-Bar graph comparing average ratings across platforms 
+ Bar graph comparing average Rotten Tomatoes score for each platform
+ 
+```{r}
+highest_rated <- streaming_data %>% summarise(Highest=max(Rotten.Tomatoes, na.rm = TRUE))
 
-  
-2. What are the most dominant genres for each streaming service?  
-
-Stacked bar chart or genre heatmap 
-
-
-3. How do the number of movies released per year vary by platform? 
-
-Line graph over time 
+highest_rated
 
 
-4. Which platform has the most critically acclaimed movies (RT > 90%)? 
 
-Scatter plot or distribution chart 
 
-  
-5. What is the overlap of movies across multiple platforms?  
 
-Venn diagram or matrix of shared titles 
+```
+ 
+ 
+ 
 
-6. Of each platform, what are the difference between age group recommendation?
-  
-Scatter plot by age
+2. How many titles are available on each platform?
 
-7. Do longer movies tend to have higher raters?
+```{r}
+platform_counts <- streaming_data %>%
+  summarise(
+    Netflix = sum(Netflix),
+    Hulu = sum(Hulu),
+    Prime.Video = sum(Prime.Video),
+    Disney. = sum(Disney.)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "Title_Count")
 
-Scatter plot of runtime vs. RT rating
+platform_counts
+```
 
-8. Which platforms are more focused on recent vs. classic films?
+```{r}
 
-Histogram of release years per platform
+ggplot(platform_counts, aes(x = reorder(Platform, -Title_Count), y = Title_Count)) +
+  geom_bar(stat = "identity", fill = "darkgreen") +
+  labs(title = "Number of Titles per Platform", x = "Platform", y = "Title Count") +
+  theme_minimal()
 
-9. Which genres tend to have the highest/lowest ratings?
 
-Boxplots or bar charts by genre, showing average/median scores
+```
 
-10. How have movie ratings changed over time per platform?
+bar graph showing total number of titles per platform
 
-Line graph of average rating per year per platform
+3. How has the number of titles released over time changed for each platform?
 
-12. What genres are most underrepresented per platform?
 
-Heatmap showing missing or low-count genres
 
+ Line graph showing number of titles per release year, grouped by platform
+
+4. Which platform has the most highly rated content (RT score > 90%)?
+ Bar chart showing count of high-rated titles per platform
+ 
+ 
+```{r}
+
+highly_rated <- streaming_data %>% filter(Rotten.Tomatoes > 90)
+
+hr <- highly_rated %>%
+  summarise(
+    Netflix = sum(Netflix),
+    Hulu = sum(Hulu),
+    Prime.Video = sum(Prime.Video),
+    Disney. = sum(Disney.)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "High_Rated_Count") %>%
+  arrange(desc(High_Rated_Count))
+
+hr
+
+```
+
+```{r}
+
+ggplot(hr, aes(x = reorder(Platform, -High_Rated_Count), y = High_Rated_Count)) +
+  geom_bar(stat = "identity", fill = "tomato") +
+  labs(title = "Highly Rated Content (RT > 90%) per Platform",
+       x = "Platform", y = "Number of Titles") +
+  theme_minimal()
+
+
+```
+
+
+
+
+5. How do age ratings vary across platforms?
+ Grouped bar chart showing count of each age rating (e.g., PG, R) per platform
+ 
+```{r}
+#platform_age <- streaming_data %>% filter(Age) %>% select(Netflix, Hulu, Disney., Prime.Video)
+
+#platform_age
+
+
+```
+ 
+ 
+ 
+
+6. Which platforms focus more on older vs. newer titles?
+ Histogram showing release years per platform
+
+
+7. How do average Rotten Tomatoes scores differ by age rating?
+ Boxplot or bar chart showing average score per age group
+ 
+```{r}
+
+```
+
+ 
+ 
+ 
+8. How have average Rotten Tomatoes scores changed over time per platform?
+ Line graph of average score by year for each platform
+ 
+
+9. Which age ratings are underrepresented on each platform?
+ Heatmap or bar chart showing low-count age groups per platform
 
 
 
