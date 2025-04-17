@@ -43,6 +43,9 @@ Streaming platforms are now the go-to for watching movies and shows, and each on
 ```{r}
 library(tidyverse)
 library(dplyr)
+streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv")
+glimpse(streaming_data) %>% 
+  head(100)
 
 ```
 
@@ -57,13 +60,48 @@ Bar graph comparing average Rotten Tomatoes score for each platform
 How many titles are available on each platform?
 Bar graph showing total number of titles per platform
 ```{r}
+titles_available <- streaming_data %>% 
+   summarise(
+    Netflix = sum(Netflix, na.rm = TRUE), #counting the number of 1s
+    Hulu = sum(Hulu, na.rm = TRUE),
+    Disney = sum(`Disney+`, na.rm = TRUE),
+    Prime = sum(`Prime Video`, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "Count") %>%
+  ggplot(aes(x = Platform, y = Count, fill = Platform)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Total Titles Available Per Platform",
+    x = "Platform",
+    y = "Number of Titles"
+  )
 
+titles_available
 ```
 
 How has the number of titles released over time changed for each platform?
 Line graph showing number of titles per release year, grouped by platform
 ```{r}
+titles_over_time <- streaming_data %>%
+  select(Title, Year, Netflix, Hulu, `Disney+`, `Prime Video`) %>%
+  pivot_longer(
+    cols = c(Netflix, Hulu, `Disney+`, `Prime Video`),
+    names_to = "Platform",
+    values_to = "Available"
+  ) %>%
+  filter(Available == 1, !is.na(Year)) %>%  # Only keep titles available on a platform and with a known year
+  group_by(Year, Platform) %>%
+  summarise(Count = n()) %>%
+  ungroup()
 
+ggplot(titles_over_time, aes(x = Year, y = Count, color = Platform)) +
+  geom_line() +
+  labs(
+    title = "Number of Titles Released Over Time by Platform",
+    x = "Release Year",
+    y = "Number of Titles",
+    color = "Platform"
+  ) 
 ```
 
 Which platform has the most highly rated content (RT score > 90%)?
@@ -78,11 +116,6 @@ Grouped bar chart showing count of each age rating (e.g., PG, R) per platform
 
 ```
 
-Do titles with longer runtimes get better ratings? (Only if runtime is added later — otherwise can remove)
-Scatter plot of runtime vs. Rotten Tomatoes score ❌ (omit if no runtime column)
-```{r}
-
-```
 
 Which platforms focus more on older vs. newer titles?
 Histogram showing release years per platform
