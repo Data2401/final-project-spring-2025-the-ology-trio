@@ -12,23 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-prime-video-disney
 ```{r}
-
-library(dplyr)
-
 library(tidyverse)
-
-
-
-
-```
-
-
-```{r}
-streaming_data <- read.csv("MoviesOnStreamingPlatforms 2.csv") 
-#streaming_data <- read.csv("C:/Users/ar309/AppData/Local/Temp/bd77a138-b51e-4d73-ba8a-91587158c44a_archive.zip.44a/MoviesOnStreamingPlatforms.csv") 
-
-glimpse(streaming_data)
-
+library(dplyr)
+library(janitor)
+streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
+glimpse(streaming_data) 
 ```
 
 # What's In It?
@@ -59,12 +47,7 @@ Streaming platforms are now the go-to for watching movies and shows, and each on
 
 ---
 ```{r}
-library(tidyverse)
-library(dplyr)
-library(janitor)
-streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
-glimpse(streaming_data) %>% 
-  head(100)
+
 
 ```
 
