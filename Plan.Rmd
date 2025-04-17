@@ -11,7 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ### The Ology Trio
 
 Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-prime-video-disney
+```{r}
 
+library(dplyr)
+
+library(tidyverse)
+
+
+
+
+```
+
+
+```{r}
+streaming_data <- read.csv("MoviesOnStreamingPlatforms 2.csv") 
+#streaming_data <- read.csv("C:/Users/ar309/AppData/Local/Temp/bd77a138-b51e-4d73-ba8a-91587158c44a_archive.zip.44a/MoviesOnStreamingPlatforms.csv") 
+
+glimpse(streaming_data)
+
+```
 
 # What's In It?
 
@@ -43,10 +61,25 @@ Streaming platforms are now the go-to for watching movies and shows, and each on
 ```{r}
 library(tidyverse)
 library(dplyr)
+library(janitor)
+streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
+glimpse(streaming_data) %>% 
+  head(100)
 
 ```
 
 ### Questions We Plan to Ask (and Graphs to Make) 
+
+1. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
+
+ Bar graph comparing average Rotten Tomatoes score for each platform
+ 
+```{r}
+highest_rated <- streaming_data %>% summarise(Highest=max(rotten_tomatoes, na.rm = TRUE))
+
+highest_rated
+```
+
 
 Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
 Bar graph comparing average Rotten Tomatoes score for each platform
@@ -57,13 +90,48 @@ Bar graph comparing average Rotten Tomatoes score for each platform
 How many titles are available on each platform?
 Bar graph showing total number of titles per platform
 ```{r}
+titles_available <- streaming_data %>% 
+   summarise(
+    Netflix = sum(netflix, na.rm = TRUE), #counting the number of 1s
+    Hulu = sum(hulu, na.rm = TRUE),
+    Disney = sum(disney, na.rm = TRUE),
+    Prime = sum(prime_video, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "Count") %>%
+  ggplot(aes(x = Platform, y = Count, fill = Platform)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Total Titles Available Per Platform",
+    x = "Platform",
+    y = "Number of Titles"
+  )
 
+titles_available
 ```
 
 How has the number of titles released over time changed for each platform?
 Line graph showing number of titles per release year, grouped by platform
 ```{r}
+titles_over_time <- streaming_data %>%
+  select(title, year, netflix, hulu, disney, prime_video) %>%
+  pivot_longer(
+    cols = c(netflix, hulu, disney, prime_video),
+    names_to = "Platform",
+    values_to = "Available"
+  ) %>%
+  filter(Available == 1, !is.na(year)) %>%  # Only keep titles available on a platform and with a known year
+  group_by(year, Platform) %>%
+  summarise(Count = n()) %>%
+  ungroup()
 
+ggplot(titles_over_time, aes(x = year, y = Count, color = Platform)) +
+  geom_line() +
+  labs(
+    title = "Number of Titles Released Over Time by Platform",
+    x = "Release Year",
+    y = "Number of Titles",
+    color = "Platform"
+  ) 
 ```
 
 Which platform has the most highly rated content (RT score > 90%)?
@@ -78,11 +146,6 @@ Grouped bar chart showing count of each age rating (e.g., PG, R) per platform
 
 ```
 
-Do titles with longer runtimes get better ratings? (Only if runtime is added later — otherwise can remove)
-Scatter plot of runtime vs. Rotten Tomatoes score ❌ (omit if no runtime column)
-```{r}
-
-```
 
 Which platforms focus more on older vs. newer titles?
 Histogram showing release years per platform
@@ -100,6 +163,7 @@ How have average Rotten Tomatoes scores changed over time per platform?
 Line graph of average score by year for each platform
 ```{r}
 
+
 ```
 
 Which age ratings are underrepresented on each platform?
@@ -107,4 +171,116 @@ Heatmap or bar chart showing low-count age groups per platform
 ```{r}
 
 ```
+
+
+```
+ 
+ 
+ 
+
+2. How many titles are available on each platform?
+
+```{r}
+platform_counts <- streaming_data %>%
+  summarise(
+    Netflix = sum(netflix),
+    Hulu = sum(hulu),
+    Prime.Video = sum(prime_video),
+    Disney. = sum(disney)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "Title_Count")
+
+platform_counts
+```
+
+```{r}
+
+ggplot(platform_counts, aes(x = reorder(Platform, -Title_Count), y = Title_Count)) +
+  geom_bar(stat = "identity", fill = "darkgreen") +
+  labs(title = "Number of Titles per Platform", x = "Platform", y = "Title Count") +
+  theme_minimal()
+
+
+```
+
+bar graph showing total number of titles per platform
+
+3. How has the number of titles released over time changed for each platform?
+
+
+
+ Line graph showing number of titles per release year, grouped by platform
+
+4. Which platform has the most highly rated content (RT score > 90%)?
+ Bar chart showing count of high-rated titles per platform
+ 
+ 
+```{r}
+
+highly_rated <- streaming_data %>% filter(rotten_tomatoes > 90)
+
+hr <- highly_rated %>%
+  summarise(
+    Netflix = sum(netflix),
+    Hulu = sum(hulu),
+    Prime.Video = sum(prime_video),
+    Disney. = sum(disney)
+  ) %>%
+  pivot_longer(cols = everything(), names_to = "Platform", values_to = "High_Rated_Count") %>%
+  arrange(desc(High_Rated_Count))
+
+hr
+
+```
+
+```{r}
+
+ggplot(hr, aes(x = reorder(Platform, -High_Rated_Count), y = High_Rated_Count)) +
+  geom_bar(stat = "identity", fill = "tomato") +
+  labs(title = "Highly Rated Content (RT > 90%) per Platform",
+       x = "Platform", y = "Number of Titles") +
+  theme_minimal()
+
+
+```
+
+
+
+
+5. How do age ratings vary across platforms?
+ Grouped bar chart showing count of each age rating (e.g., PG, R) per platform
+ 
+```{r}
+#platform_age <- streaming_data %>% filter(Age) %>% select(Netflix, Hulu, Disney., Prime.Video)
+
+#platform_age
+
+
+```
+ 
+ 
+ 
+
+6. Which platforms focus more on older vs. newer titles?
+ Histogram showing release years per platform
+
+
+7. How do average Rotten Tomatoes scores differ by age rating?
+ Boxplot or bar chart showing average score per age group
+ 
+```{r}
+
+```
+
+ 
+ 
+ 
+8. How have average Rotten Tomatoes scores changed over time per platform?
+ Line graph of average score by year for each platform
+ 
+
+9. Which age ratings are underrepresented on each platform?
+ Heatmap or bar chart showing low-count age groups per platform
+
+
 
