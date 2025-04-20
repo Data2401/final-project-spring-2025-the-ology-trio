@@ -1,14 +1,12 @@
 ---
-title: "Plan"
-output: html_document
-date: "2025-04-15"
+title: "Project"
+output: ioslides_presentation
+date: "2025-04-20"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
-
-### The Ology Trio
 
 ## Introduction
 
@@ -36,11 +34,8 @@ library(janitor)
 
 ## Unfiltered Data
 
-Data set : https://www.kaggle.com/datasets/sanyacodes/movies-dataset-netflix-prime-video-disney
-
 ```{r pressure}
 streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
-glimpse(streaming_data) 
 ```
 
 ## Key Terms for Unfiltered Data & Filtered Data
@@ -66,64 +61,7 @@ Title: The full title of the movie as it appears on the streaming platforms.
 
 ## Q1. How many titles are available on each platform?
 
-<<<<<<< HEAD
 ```{r echo=FALSE}
-
-Streaming platforms are now the go-to for watching movies and shows, and each one has its own unique library. With all the competition for content, it’s more important than ever to understand what sets these platforms apart — not just in what they have, but in the quality and variety of their offerings. This dataset gives us a snapshot of what’s available on Netflix, Prime Video, Disney+, and Hulu. By exploring the data, we can spot each platform’s strengths, see trends in genres and quality, and help people or companies make smarter choices when it comes to content.
-
----
-
-### Questions We Plan to Ask (and Graphs to Make) 
-
-1. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
-
- Bar graph comparing average Rotten Tomatoes score for each platform
- 
-```{r}
-highest_rated <- streaming_data %>%
-  filter(!is.na(rotten_tomatoes)) %>%
-  mutate(rotten_tomatoes = as.numeric(gsub("/100", "", rotten_tomatoes))) %>%
-  pivot_longer(
-    cols = c(netflix, hulu, disney, prime_video),
-    names_to = "Platform",
-    values_to = "Available"
-  ) %>%
-  filter(Available == 1) %>%
-  group_by(Platform) %>%
-  summarise(avg_score = mean(rotten_tomatoes, na.rm = TRUE), .groups = "drop")
-
-ggplot(highest_rated, aes(x = reorder(Platform, avg_score), y = avg_score, color = Platform)) +
-  geom_segment(aes(xend = Platform, y = 0, yend = avg_score), size = 1.2) +  # the stick
-  geom_point(size = 2) +  # the lollipop head
-  geom_text(aes(label = round(avg_score, 1)), hjust = -0.3, fontface = "bold") +  # labels to the right
-  scale_color_manual(values = c(
-    "netflix" = "#E50914",
-    "hulu" = "#1CE783",
-    "disney" = "#0A74DA",
-    "prime_video" = "#FF9900"
-  )) +
-  labs(
-    title = "Average Rotten Tomatoes Score by Platform",
-    x = "",
-    y = "Average RT Score"
-  ) +
-  coord_flip() +  # Flip chart horizontally
-  theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, face = "bold"),
-    axis.text.x = element_text(face = "bold"),
-    axis.text.y = element_text(face = "bold"),
-    legend.position = "none"
-  )
-
-highest_rated
-
-```
-
-How many titles are available on each platform?
-Bar graph showing total number of titles per platform
-```{r}
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
 titles_available <- streaming_data %>% 
   summarise(
     Netflix = sum(netflix, na.rm = TRUE),
@@ -212,20 +150,12 @@ titles_over_time <- streaming_data %>%
     names_to = "Platform",
     values_to = "Available"
   ) %>%
-<<<<<<< HEAD
-  filter(Available == 1, !is.na(year), year >= 2000) %>%
-=======
   filter(Available == 1, !is.na(year)) %>%
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
   group_by(year, Platform) %>%
   summarise(Count = n(), .groups = "drop")
 
 ggplot(titles_over_time, aes(x = year, y = Count, color = Platform)) +
-<<<<<<< HEAD
   geom_line(linewidth = 1.2) +
-=======
-  geom_line(size = 1.2) +
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
   scale_color_manual(values = c(
     "netflix" = "#E50914", 
     "hulu" = "#1CE783", 
@@ -244,7 +174,6 @@ ggplot(titles_over_time, aes(x = year, y = Count, color = Platform)) +
     axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
     axis.text.y = element_text(face = "bold")
   )
-<<<<<<< HEAD
 ```
 
 ## Q4. Which platform has the most highly rated content (RT score > 90%)?
@@ -253,248 +182,11 @@ high_rated_rt_score <- streaming_data %>%
   filter(rotten_tomatoes > 90)
 
 high_rated_counts <- high_rated_rt_score %>%
-=======
-
-
-```
-
-Which platform has the most highly rated content (RT score > 90%)?
-Bar chart showing count of high-rated titles per platform
-```{r}
-high_rated <- streaming_data %>%
-  filter(rotten_tomatoes > 90)
-
-high_rated_counts <- high_rated %>%
   pivot_longer(
     cols = c(netflix, hulu, disney, prime_video),
     names_to = "Platform",
     values_to = "Available"
   ) %>%
-  filter(Available == 1) %>%
-  group_by(Platform) %>%
-  summarise(Count = n()) %>%
-  ungroup()
-
-ggplot(high_rated_counts, aes(x = Platform, y = Count, color = Platform)) +
-  geom_segment(aes(x = Platform, xend = Platform, y = 0, yend = Count), size = 1.2) +
-  geom_point(size = 4) +
-  scale_color_manual(values = c(
-    "netflix" = "#E50914", 
-    "hulu" = "#1CE783", 
-    "disney" = "#0A74DA", 
-    "prime_video" = "#FF9900"
-  )) +
-  labs(
-    title = "Highly Rated Titles (RT > 90%) per Platform",
-    x = "Platform",
-    y = "Number of High-Rated Titles"
-  ) +
-  theme_bw()
-
-```
-
-How do age ratings vary across platforms?
-Grouped bar chart showing count of each age rating (e.g., PG, R) per platform
-```{r}
-age_rating_counts <- streaming_data %>%
-  select(title, netflix, hulu, disney, prime_video, age) %>%
-  pivot_longer(
-    cols = c(netflix, hulu, disney, prime_video),
-    names_to = "Platform",
-    values_to = "Available"
-  ) %>%
-  filter(Available == 1) %>%  # Only titles that are available on a platform
-  mutate(age_clean = gsub("\\+", "", age)) %>%  # Remove the '+' symbol
-  group_by(Platform, age_clean) %>%
-  summarise(Count = n(), .groups = "drop")  # Count number of titles for each age group
-
-ggplot(age_rating_counts, aes(x = Platform, y = Count, fill = Platform)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~ age_clean) +  # Facet by age rating
-  scale_fill_manual(values = c(
-    "netflix" = "#E50914", 
-    "hulu" = "#1CE783", 
-    "disney" = "#0A74DA", 
-    "prime_video" = "#FF9900")) +  # Use platform-specific colors
-  labs(
-    title = "Age Ratings Across Platforms",
-    x = "Platform",
-    y = "Number of Titles",
-    fill = "Platform"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    axis.text.y = element_text(face = "bold")
-  )
-
-
-```
-
-
-Which platforms focus more on older vs. newer titles?
-Histogram showing release years per platform
-```{r}
-release_year_line <- streaming_data %>%
-  select(title, year, netflix, hulu, disney, prime_video) %>%
-  pivot_longer(
-    cols = c(netflix, hulu, disney, prime_video),
-    names_to = "Platform",
-    values_to = "Available"
-  ) %>%
-  filter(Available == 1, !is.na(year)) %>%
-  group_by(year, Platform) %>%
-  summarise(Count = n(), .groups = "drop") %>%
-  ggplot(aes(x = year, y = Count, color = Platform, linetype = Platform)) +
-  geom_line(size = .5) +
-  geom_point(size = 3, shape = 8, fill = "white", stroke = 1) +
-  scale_color_manual(values = c(
-    "netflix" = "#E50914", 
-    "hulu" = "#1CE783", 
-    "disney" = "#0A74DA", 
-    "prime_video" = "#FF9900")) +
-  scale_linetype_manual(values = c(
-    "netflix" = "solid", 
-    "hulu" = "dashed", 
-    "disney" = "dotdash", 
-    "prime_video" = "twodash")) +
-  labs(
-    title = "Number of Titles Released Over Time by Platform",
-    x = "Release Year",
-    y = "Number of Titles",
-    color = "Platform",
-    linetype = "Platform"
-  ) +
-  theme_classic(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.text.y = element_text(face = "bold"),
-    legend.title = element_text(face = "bold")
-  )
-
-release_year_line
-
-```
-
-How do average Rotten Tomatoes scores differ by age rating?
-Boxplot or bar chart showing average score per age group
-```{r}
-
-age_counts <- streaming_data %>%
-  filter(!is.na(age), !is.na(rotten_tomatoes)) %>%
-  mutate(
-    age_clean = gsub("\\+", "", age),
-    age_clean = factor(age_clean, levels = c("7", "13", "16", "18", "all")),
-    rotten_tomatoes = as.numeric(gsub("/100", "", rotten_tomatoes))
-  ) %>%
-  count(age_clean)
-
-boxplot_ratings <- streaming_data %>%
-  filter(!is.na(age), !is.na(rotten_tomatoes)) %>%
-  mutate(
-    age_clean = gsub("\\+", "", age),
-    age_clean = factor(age_clean, levels = c("7", "13", "16", "18", "all")),
-    rotten_tomatoes = as.numeric(gsub("/100", "", rotten_tomatoes))
-  ) %>%
-  ggplot(aes(x = age_clean, y = rotten_tomatoes, fill = age_clean)) +
-  
-  
-  geom_boxplot(outlier.alpha = 0.2, width = 0.6) +
-  
-  geom_text(
-    data = age_counts,
-    aes(x = age_clean, y = 105, label = paste0("n = ", n)),
-    inherit.aes = FALSE,
-    fontface = "bold",
-    size = 4
-  ) +
-
-  scale_fill_brewer(palette = "Set1") +
-  coord_cartesian(ylim = c(0, 110)) +
-  labs(
-    title = "Rotten Tomatoes Scores by Age Rating",
-    subtitle = "Boxplot with number of titles per group",
-    x = "Age Rating",
-    y = "Rotten Tomatoes Score",
-    fill = "Age Rating"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 18, face = "bold"),
-    plot.subtitle = element_text(hjust = 0.5),
-    axis.text.x = element_text(face = "bold"),
-    axis.text.y = element_text(face = "bold"),
-    legend.position = "none"
-  )
-
-boxplot_ratings
-
-```
-
-How have average Rotten Tomatoes scores changed over time per platform?
-Line graph of average score by year for each platform
-```{r}
-avg_score_over_time <- streaming_data %>%
-  filter(!is.na(year), !is.na(rotten_tomatoes)) %>%
-  mutate(
-    rotten_tomatoes = as.numeric(gsub("/100", "", rotten_tomatoes)),
-    age_clean = gsub("\\+", "", age)
-  ) %>%
-  filter(!is.na(rotten_tomatoes)) %>%
-  pivot_longer(
-    cols = c(netflix, hulu, disney, prime_video),
-    names_to = "Platform",
-    values_to = "Available"
-  ) %>%
-  filter(Available == 1) %>%
-  group_by(year, Platform) %>%
-  summarise(avg_rotten_tomatoes = mean(rotten_tomatoes, na.rm = TRUE), .groups = "drop") %>%
-  ggplot(aes(x = year, y = avg_rotten_tomatoes, color = Platform)) +
-  
- 
-  geom_smooth(se = FALSE, method = "loess", span = 0.4, size = 1.5) +
-
-
-  scale_color_manual(values = c(
-    "netflix" = "#E50914", 
-    "hulu" = "#1CE783", 
-    "disney" = "#0A74DA", 
-    "prime_video" = "#FF9900")) +
-  
-  labs(
-    title = "Rotten Tomatoes Scores by Year per Platform",
-    x = "Release Year",
-    y = "Average RT Score",
-    color = "Platform"
-  ) +
-  theme_minimal(base_size = 10) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 10, face = "bold"),
-    axis.text.x = element_text(angle = 45,face = "bold", size = 10, hjust = 1),
-    axis.text.y = element_text(face = "bold")
-  )
-
-avg_score_over_time
-
-
-```
-
-Which age ratings are underrepresented on each platform?
-Heatmap or bar chart showing low-count age groups per platform
-```{r}
-age_rating_counts <- streaming_data %>%
-  filter(!is.na(age), !is.na(rotten_tomatoes)) %>%  # Remove rows with NA values for age and rotten_tomatoes
-  mutate(age_clean = gsub("\\+", "", age)) %>%  # Clean age rating by removing the '+' symbol
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
-  pivot_longer(
-    cols = c(netflix, hulu, disney, prime_video),
-    names_to = "Platform",
-    values_to = "Available"
-  ) %>%
-<<<<<<< HEAD
   filter(Available == 1) %>%
   group_by(Platform) %>%
   summarise(Count = n()) %>%
@@ -628,29 +320,6 @@ age_ratings <- streaming_data %>%
     fontface = "bold",
     size = 4
   ) +
-=======
-  filter(Available == 1) %>%  # Only keep titles that are available on a platform
-  group_by(Platform, age_clean) %>%
-  summarise(Count = n(), .groups = "drop")  # Count the number of titles for each age group per platform
-
-ggplot(age_rating_counts, aes(x = Platform, y = age_clean, fill = Count)) +
-  geom_tile() +
-  scale_fill_gradientn(
-    colors = c("red", "orange", "yellow", "green", "blue", "purple", "magenta")
-  ) +
-  labs(
-    title = "Underrepresented Age Ratings per Platform",
-    x = "Platform",
-    y = "Age Rating",
-    fill = "Title Count"
-  ) +
-  theme_minimal(base_size = 14) +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
-    axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
-    axis.text.y = element_text(face = "bold")
-  )
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
 
   scale_fill_brewer(palette = "Set1") +
   coord_cartesian(ylim = c(0, 110)) +
@@ -750,11 +419,3 @@ ggplot(age_rating_counts, aes(x = Platform, y = age_clean, fill = Count)) +
 
 ```
 
-
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> b9eb2a1b160716585240a2325dab2353a5bdba66
