@@ -150,7 +150,7 @@ titles_over_time <- streaming_data %>%
     names_to = "Platform",
     values_to = "Available"
   ) %>%
-  filter(Available == 1, !is.na(year), year >= 2000) %>%
+  filter(Available == 1, !is.na(year), year >= 1997) %>%
   group_by(year, Platform) %>%
   summarise(Count = n(), .groups = "drop")
 
