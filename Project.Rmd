@@ -26,23 +26,29 @@ If you're anything like us, you’ve probably spent hours scrolling through Netf
 
 ## Packages Used
 
-```{r cars, echo = TRUE}
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+# Loading the full tidyverse
 library(tidyverse)
+
+#Using this for data manipulation
 library(dplyr)
+
+#Cleaning column names
+#(e.g., turning "Rotten Tomatoes" into rotten_tomatoes)
 library(janitor)
 ```
 
 ## Unfiltered Data
 
-```{r pressure}
-streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") 
+glimpse(read.csv("MoviesOnStreamingPlatforms 2.csv"))
+streaming_data <- streaming_data %>% clean_names()
 ```
 
-## Key Terms for Unfiltered Data & Filtered Data
-
-
-- ID: A unique identifier for each movie within the dataset.
-Title: The full title of the movie as it appears on the streaming platforms.
+## Key Terms
+<div style ="font-size: 80%;">
+- ID: A unique identifier for each movie within the data set.Title: The full title of the movie as it appears on the streaming platforms.
 
 - Year: The release year of the movie, indicating when the movie was first made available to the public.
 
@@ -53,7 +59,7 @@ Title: The full title of the movie as it appears on the streaming platforms.
 - Netflix, Hulu, Prime Video, Disney + : A binary indicator (0 or 1) of whether the movie is available on the streaming service, with 1 indicating availability.
 
 - Type: A categorical indicator distinguishing the content as either a 'Movie' or a 'TV Show'.
-
+</div>
 ## Key Values and Calculations:
 - The dataset spans over a century of movie releases, from as early as 1914 to 2021.
 
@@ -111,12 +117,12 @@ highest_rated <- streaming_data %>%
   ) %>%
   filter(Available == 1) %>%
   group_by(Platform) %>%
-  summarise(avg_score = mean(rotten_tomatoes, na.rm = TRUE), .groups = "drop")
+  summarise(avg_score = mean(rotten_tomatoes), .groups = "drop")
 
 ggplot(highest_rated, aes(x = reorder(Platform, avg_score), y = avg_score, color = Platform)) +
   geom_segment(aes(xend = Platform, y = 0, yend = avg_score), linewidth = 1.2) +  # the stick
-  geom_point(size = 2) +  # the lollipop head
-  geom_text(aes(label = round(avg_score, 1)), hjust = -0.3, fontface = "bold") +  # labels to the right
+  geom_point(size = 2) + expand_limits(y = 70) + # the lollipop head
+  geom_text(aes(label = round(avg_score, 1)), hjust = -0.25, fontface = "bold") +  # labels to the right
   scale_color_manual(values = c(
     "netflix" = "red",
     "hulu" = "green",
@@ -343,7 +349,7 @@ avg_score_over_time <- streaming_data %>%
   ) %>%
   filter(Available == 1) %>%
   group_by(year, Platform) %>%
-  summarise(avg_rotten_tomatoes = mean(rotten_tomatoes, na.rm = TRUE), .groups = "drop") %>%
+  summarise(avg_rotten_tomatoes = mean(rotten_tomatoes), .groups = "drop") %>%
   ggplot(aes(x = year, y = avg_rotten_tomatoes, color = Platform)) +
  
   geom_smooth(se = FALSE, method = "loess", span = 0.4, linewidth = 1.5) +
@@ -371,7 +377,7 @@ avg_score_over_time
 ```
 
 ## Q9. Which age ratings are underrepresented on each platform?
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
 age_rating_counts <- streaming_data %>%
   filter(!is.na(age), !is.na(rotten_tomatoes)) %>%  # Remove rows with NA values for age and rotten_tomatoes
   mutate(age_clean = gsub("\\+", "", age)) %>%  # Clean age rating by removing the '+' symbol
@@ -405,6 +411,8 @@ ggplot(age_rating_counts, aes(x = Platform, y = age_clean, fill = Count)) +
 ```
 
 
-#summary 
+
+
+## Summary 
 
 If you want something that's highly rated, family friendly Disney is the way to go which has a library of films from Pixar, Marvel and National Geographic. For a bigger selection Netflix and Prime offer the widest selection of titles and if you're into more of a mature content, Hulu and Netflix are the best way to go. No matter what you're in the mood for, this guide will help you pick the best platform for your next watch. 
