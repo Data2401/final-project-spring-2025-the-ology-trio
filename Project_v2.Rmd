@@ -386,12 +386,9 @@ age_ratings <- streaming_data %>%
 age_ratings
 ```
 
-<<<<<<< HEAD
-## Q8. How have average Rotten Tomatoes scores changed over time per platform?
 
-=======
 ## Q8. How have average scores changed over time per platform?
->>>>>>> 824119c1ac87b420def4e6a4db893ad3662a8636
+
 ```{r echo=FALSE, message=FALSE}
 avg_score_over_time <- streaming_data %>%
   filter(!is.na(year), !is.na(rotten_tomatoes)) %>%
