@@ -20,7 +20,7 @@ If you're anything like us, you’ve probably spent hours scrolling through Netf
 5. How do age ratings vary across platforms?
 6. Which platforms focus more on older vs. newer titles?
 7. How do average Rotten Tomatoes scores differ by age rating?
-8. How have average Rotten Tomatoes scores changed over time per platform?
+8. How have average scores changed over time per platform?
 9. Which age ratings are underrepresented on each platform?
 
 
@@ -333,7 +333,7 @@ age_ratings <- streaming_data %>%
 age_ratings
 ```
 
-## Q8. How have average Rotten Tomatoes scores changed over time per platform?
+## Q8. How have average scores changed over time per platform?
 ```{r echo=FALSE, message=FALSE}
 avg_score_over_time <- streaming_data %>%
   filter(!is.na(year), !is.na(rotten_tomatoes)) %>%
