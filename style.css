@@ -1,0 +1,85 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #fdf6e3;
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  color: #e50914;
+  font-weight: bold;
+}
+
+h2:before {
+  content: "🍅 ";
+}
+
+h3:before {
+  content: "🎬 ";
+}
+
+p {
+  font-size: 16px;
+}
+
+code {
+  background-color: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+img.platform-gif {
+  width: 100px;
+  display: block;
+  margin: 10px auto;
+  border-radius: 12px;
+}
+
+.bar-plot-container {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 12px;
+  background-color: #fffaf0;
+}
+
+.platform-section {
+  padding: 10px;
+  margin-bottom: 20px;
+  border-left: 4px solid #999;
+  background-color: #f5f5f5;
+}
+
+.netflix {
+  border-color: #e50914;
+}
+.netflix h3:before {
+  content: "🎞️ ";
+}
+
+.hulu {
+  border-color: #1ce783;
+}
+.hulu h3:before {
+  content: "📺 ";
+}
+
+.disney {
+  border-color: #113ccf;
+}
+.disney h3:before {
+  content: "🧞 ";
+}
+
+.prime {
+  border-color: #00a8e1;
+}
+.prime h3:before {
+  content: "📦 ";
+}
+
+.bar-plot-container:hover {
+  box-shadow: 0 0 15px #ccc;
+  transition: 0.3s ease;
+}

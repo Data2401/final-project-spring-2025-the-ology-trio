@@ -1,5 +1,6 @@
 ---
 title: "Plan"
+author: Mekayla B, Ebony J, Alex R
 output: html_document
 date: "2025-04-15"
 ---

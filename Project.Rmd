@@ -1,6 +1,8 @@
 ---
 title: "Project"
-output: ioslides_presentation
+output:
+  ioslides_presentation:
+    css: style.css
 date: "2025-04-20"
 ---
 
@@ -13,16 +15,16 @@ knitr::opts_chunk$set(echo = FALSE)
 If you're anything like us, you’ve probably spent hours scrolling through Netflix, Prime Video, Disney+, and Hulu, trying to decide what to watch. With so many options available, it’s easy to feel overwhelmed, especially when it comes to choosing between the platforms. That’s where this analysis comes in—we're diving into the Rotten Tomatoes scores across these platforms to see which one consistently delivers the highest-rated content. By comparing these ratings, we want to make it easier for you to figure out which platform offers the best movies and shows based on critical reviews, so you can make more confident choices next time you're deciding what to watch.
 
 ## Questions
-1. How many titles are available on each platform?
-2. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
-3. How has the number of titles released over time changed for each platform?
-4. Which platform has the most highly rated content (RT score > 90%)?
-5. How do age ratings vary across platforms?
-6. Which platforms focus more on older vs. newer titles?
-7. How do average Rotten Tomatoes scores differ by age rating?
-8. How have average Rotten Tomatoes scores changed over time per platform?
-9. Which age ratings are underrepresented on each platform?
 
+1.  How many titles are available on each platform?
+2.  Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
+3.  How has the number of titles released over time changed for each platform?
+4.  Which platform has the most highly rated content (RT score \> 90%)?
+5.  How do age ratings vary across platforms?
+6.  Which platforms focus more on older vs. newer titles?
+7.  How do average Rotten Tomatoes scores differ by age rating?
+8.  How have average Rotten Tomatoes scores changed over time per platform?
+9.  Which age ratings are underrepresented on each platform?
 
 ## Packages Used
 
@@ -30,6 +32,15 @@ If you're anything like us, you’ve probably spent hours scrolling through Netf
 library(tidyverse)
 library(dplyr)
 library(janitor)
+library(showtext)  
+
+
+install.packages("showtext")
+
+font_add_google("Quicksand", "quicksand")
+showtext_auto()
+
+
 ```
 
 ## Unfiltered Data
@@ -38,26 +49,38 @@ library(janitor)
 streaming_data <- read_csv("MoviesOnStreamingPlatforms 2.csv") %>% clean_names()
 ```
 
+```{r}
+icon_df <- data.frame(
+  Platform = c("Netflix", "Hulu", "Disney", "Prime"),
+  icon = c(
+    "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg",
+    "https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png"
+  )
+)
+
+```
+
 ## Key Terms for Unfiltered Data & Filtered Data
 
+-   ID: A unique identifier for each movie within the dataset. Title: The full title of the movie as it appears on the streaming platforms.
 
-- ID: A unique identifier for each movie within the dataset.
-Title: The full title of the movie as it appears on the streaming platforms.
+-   Year: The release year of the movie, indicating when the movie was first made available to the public.
 
-- Year: The release year of the movie, indicating when the movie was first made available to the public.
+-   Age: The recommended age group for the movie's audience, such as '7+', '13+', '16+', or '18+'.
 
-- Age: The recommended age group for the movie's audience, such as '7+', '13+', '16+', or '18+'.
+-   Rotten Tomatoes: The movie's score on Rotten Tomatoes, which reflects critics' reviews and can be used as a measure of the movie's reception.
 
-- Rotten Tomatoes: The movie's score on Rotten Tomatoes, which reflects critics' reviews and can be used as a measure of the movie's reception.
+-   Netflix, Hulu, Prime Video, Disney + : A binary indicator (0 or 1) of whether the movie is available on the streaming service, with 1 indicating availability.
 
-- Netflix, Hulu, Prime Video, Disney + : A binary indicator (0 or 1) of whether the movie is available on the streaming service, with 1 indicating availability.
-
-- Type: A categorical indicator distinguishing the content as either a 'Movie' or a 'TV Show'.
+-   Type: A categorical indicator distinguishing the content as either a 'Movie' or a 'TV Show'.
 
 ## Key Values and Calculations:
-- The dataset spans over a century of movie releases, from as early as 1914 to 2021.
 
-- With 9515 unique values for movie titles, the dataset covers a wide range of cinematic works, from classics to recent releases.
+-   The dataset spans over a century of movie releases, from as early as 1914 to 2021.
+
+-   With 9515 unique values for movie titles, the dataset covers a wide range of cinematic works, from classics to recent releases.
 
 ## Q1. How many titles are available on each platform?
 
@@ -95,10 +118,7 @@ titles_available <- streaming_data %>%
 titles_available
 ```
 
-
-
 ## Q2. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
-
 
 ```{r echo=FALSE}
 highest_rated <- streaming_data %>%
@@ -140,8 +160,8 @@ ggplot(highest_rated, aes(x = reorder(Platform, avg_score), y = avg_score, color
 highest_rated
 ```
 
-
 ## Q3. How has the number of titles released over time changed for each platform?
+
 ```{r echo=FALSE}
 titles_over_time <- streaming_data %>%
   select(title, year, netflix, hulu, disney, prime_video) %>%
@@ -176,7 +196,8 @@ ggplot(titles_over_time, aes(x = year, y = Count, color = Platform)) +
   )
 ```
 
-## Q4. Which platform has the most highly rated content (RT score > 90%)?
+## Q4. Which platform has the most highly rated content (RT score \> 90%)?
+
 ```{r echo=FALSE}
 high_rated_rt_score <- streaming_data %>%
   filter(rotten_tomatoes > 90)
@@ -210,6 +231,7 @@ ggplot(high_rated_counts, aes(x = Platform, y = Count, color = Platform)) +
 ```
 
 ## Q5. How do age ratings vary across platforms?
+
 ```{r echo=FALSE}
 age_rating_counts <- streaming_data %>%
   select(title, netflix, hulu, disney, prime_video, age) %>%
@@ -247,6 +269,7 @@ ggplot(age_rating_counts, aes(x = Platform, y = Count, fill = Platform)) +
 ```
 
 ## Q6. Which platforms focus more on older vs. newer titles?
+
 ```{r echo=FALSE}
 release_year <- streaming_data %>%
   select(title, year, netflix, hulu, disney, prime_video) %>%
@@ -291,6 +314,7 @@ release_year
 ```
 
 ## Q7. How do average Rotten Tomatoes scores differ by age rating?
+
 ```{r echo=FALSE}
 age_counts <- streaming_data %>%
   filter(!is.na(age), !is.na(rotten_tomatoes)) %>%
@@ -343,6 +367,7 @@ age_ratings
 ```
 
 ## Q8. How have average Rotten Tomatoes scores changed over time per platform?
+
 ```{r echo=FALSE, message=FALSE}
 avg_score_over_time <- streaming_data %>%
   filter(!is.na(year), !is.na(rotten_tomatoes)) %>%
@@ -386,6 +411,7 @@ avg_score_over_time
 ```
 
 ## Q9. Which age ratings are underrepresented on each platform?
+
 ```{r echo=FALSE}
 age_rating_counts <- streaming_data %>%
   filter(!is.na(age), !is.na(rotten_tomatoes)) %>%  # Remove rows with NA values for age and rotten_tomatoes
@@ -418,4 +444,3 @@ ggplot(age_rating_counts, aes(x = Platform, y = age_clean, fill = Count)) +
   )
 
 ```
-
