@@ -1,10 +1,12 @@
 body {
+  background-color: #fffaf0;
+  background-position: center right;
   font-family: 'Arial', sans-serif;
-  background-color: #fdf6e3;
-  color: #333;
+  color: #111;
   padding: 20px;
   line-height: 1.6;
 }
+
 
 h1, h2, h3 {
   color: #e50914;
@@ -19,14 +21,26 @@ h3:before {
   content: "🎬 ";
 }
 
+/* Smaller slide titles */
+h2 {
+  font-size: 26px !important;
+  color: #e50914;
+}
+
+h1 {
+  font-size: 30px !important;
+}
+
+
 p {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 code {
   background-color: #eee;
   padding: 2px 6px;
   border-radius: 4px;
+  font-size: 16px;
 }
 
 img.platform-gif {
@@ -34,6 +48,7 @@ img.platform-gif {
   display: block;
   margin: 10px auto;
   border-radius: 12px;
+  box-shadow: 2px 2px 10px #ccc;
 }
 
 .bar-plot-container {
@@ -41,7 +56,7 @@ img.platform-gif {
   padding: 10px;
   margin-top: 20px;
   border-radius: 12px;
-  background-color: #fffaf0;
+  background-color: #fff;
 }
 
 .platform-section {
@@ -49,10 +64,15 @@ img.platform-gif {
   margin-bottom: 20px;
   border-left: 4px solid #999;
   background-color: #f5f5f5;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center right;
 }
+
 
 .netflix {
   border-color: #e50914;
+  background-image: url('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif');
 }
 .netflix h3:before {
   content: "🎞️ ";
@@ -60,6 +80,7 @@ img.platform-gif {
 
 .hulu {
   border-color: #1ce783;
+  background-image: url('https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif');
 }
 .hulu h3:before {
   content: "📺 ";
@@ -67,6 +88,7 @@ img.platform-gif {
 
 .disney {
   border-color: #113ccf;
+  background-image: url('https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif');
 }
 .disney h3:before {
   content: "🧞 ";
@@ -74,12 +96,32 @@ img.platform-gif {
 
 .prime {
   border-color: #00a8e1;
+  background-image: url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif');
 }
 .prime h3:before {
   content: "📦 ";
 }
 
 .bar-plot-container:hover {
-  box-shadow: 0 0 15px #ccc;
+  box-shadow: 0 0 15px #aaa;
   transition: 0.3s ease;
+  transform: scale(1.01);
 }
+
+
+.title-slide {
+  background-color: #fff8e7 !important;  /* warm cream */
+  color: #222 !important;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.05);
+  border-top: 8px solid #e50914;
+  border-bottom: 8px solid #e50914;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.title-slide h1,
+.title-slide h2,
+.title-slide h3 {
+  color: #222 !important;
+}
+
