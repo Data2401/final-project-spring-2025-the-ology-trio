@@ -35,7 +35,19 @@ knitr::opts_chunk$set(echo = FALSE)
 If you're anything like us, you’ve probably spent hours scrolling through Netflix, Prime Video, Disney+, and Hulu, trying to decide what to watch. With so many options available, it’s easy to feel overwhelmed, especially when it comes to choosing between the platforms. That’s where this analysis comes in—we're diving into the Rotten Tomatoes scores across these platforms to see which one consistently delivers the highest-rated content. By comparing these ratings, we want to make it easier for you to figure out which platform offers the best movies and shows based on critical reviews, so you can make more confident choices next time you're deciding what to watch.
 
 ## Questions
+<<<<<<< HEAD
 <div style ="font-size: 80%;">
+=======
+1. How many titles are available on each platform?
+2. Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
+3. How has the number of titles released over time changed for each platform?
+4. Which platform has the most highly rated content (RT score > 90%)?
+5. How do age ratings vary across platforms?
+6. Which platforms focus more on older vs. newer titles?
+7. How do average Rotten Tomatoes scores differ by age rating?
+8. How have average scores changed over time per platform?
+9. Which age ratings are underrepresented on each platform?
+>>>>>>> 824119c1ac87b420def4e6a4db893ad3662a8636
 
 1.  How many titles are available on each platform?
 2.  Which platform has the highest-rated content overall (based on Rotten Tomatoes scores)?
@@ -384,8 +396,12 @@ age_ratings <- streaming_data %>%
 age_ratings
 ```
 
+<<<<<<< HEAD
 ## Q8. How have average Rotten Tomatoes scores changed over time per platform?
 
+=======
+## Q8. How have average scores changed over time per platform?
+>>>>>>> 824119c1ac87b420def4e6a4db893ad3662a8636
 ```{r echo=FALSE, message=FALSE}
 avg_score_over_time <- streaming_data %>%
   filter(!is.na(year), !is.na(rotten_tomatoes)) %>%
